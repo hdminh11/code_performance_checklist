@@ -1,2 +1,2 @@
-const x = 1
-console.log(x)
+// const { pick } = require('lodash');
+// let x = 1;

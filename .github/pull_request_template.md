@@ -1,88 +1,88 @@
-## 📌 Mục tiêu PR
-<!-- Mô tả ngắn gọn lý do và mục tiêu của PR này -->
+## 📌 PR Objective
+<!-- Briefly describe the reason and goal of this PR -->
 
-## 🛠️ Thay đổi chính
-<!-- Liệt kê các thay đổi chính (API, logic, UI, database, ...) -->
+## 🛠️ Main Changes
+<!-- List the main changes (API, logic, UI, database, etc.) -->
 
 ## 🔍 Impact Assessment
-- [ ] Có ảnh hưởng đến service/module khác?  
-- [ ] Cần migration database?  
-- [ ] Ảnh hưởng performance? (Nếu có → kèm số liệu đo)  
-- [ ] Cập nhật metric/log để theo dõi sau deploy?  
-- [ ] Có rollback plan?
+- [ ] Affects other services/modules?  
+- [ ] Requires database migration?  
+- [ ] Performance impact? (If yes → include measurement data)  
+- [ ] Update metrics/logs for post-deploy monitoring?  
+- [ ] Rollback plan available?  
 
 ---
 
 ## ✅ Performance Checklist (Backend & Frontend)
 
 <details>
-<summary>📖 Hướng dẫn chi tiết</summary>
+<summary>📖 Detailed Guide</summary>
 
 ### Backend
-1. **Không có query N+1**  
-   - *Vấn đề*: Query lặp lại nhiều lần khi lấy dữ liệu liên quan → chậm.  
-   - *Check*: Bật log SQL / profiler, dùng JOIN hoặc `IN` query.
-2. **Query đã index**  
-   - *Vấn đề*: Không index → DB full scan.  
-   - *Check*: `EXPLAIN` query, thêm index nếu cần.
-3. **Không load toàn bộ data lớn vào memory**  
-   - *Vấn đề*: Gây out-of-memory.  
-   - *Check*: Luôn LIMIT + phân trang hoặc stream.
-4. **API response không dư data**  
-   - *Vấn đề*: Tốn băng thông, parse lâu.  
-   - *Check*: Select field cần thiết.
-5. **Có cache hợp lý**  
-   - *Vấn đề*: Query/API lặp lại gây tốn CPU/DB.  
-   - *Check*: Redis/memory cache, HTTP cache headers.
-6. **Không block event loop**  
-   - *Vấn đề*: Node.js single-thread → code sync chặn request khác.  
-   - *Check*: Tránh sync I/O, dùng worker thread nếu cần.
+1. **No N+1 queries**  
+   - *Problem*: Repeated queries for related data → slow performance.  
+   - *Check*: Enable SQL logs/profiler, use JOIN or `IN` queries.
+2. **Queries are indexed**  
+   - *Problem*: No index → DB full scan.  
+   - *Check*: Use `EXPLAIN` query, add index if needed.
+3. **No loading large datasets entirely into memory**  
+   - *Problem*: Causes out-of-memory issues.  
+   - *Check*: Always use LIMIT + pagination or streaming.
+4. **API responses contain no extra data**  
+   - *Problem*: Wastes bandwidth, increases parsing time.  
+   - *Check*: Select only necessary fields.
+5. **Proper caching applied**  
+   - *Problem*: Repeated queries/APIs waste CPU/DB resources.  
+   - *Check*: Use Redis/memory cache, HTTP cache headers.
+6. **No event loop blocking**  
+   - *Problem*: Node.js is single-threaded → sync code blocks other requests.  
+   - *Check*: Avoid sync I/O, use worker threads if necessary.
 
 ### Frontend
-1. **Không re-render không cần thiết**  
-   - *Vấn đề*: React render lại nhiều lần tốn CPU.  
-   - *Check*: Dùng React DevTools Profiler, tối ưu với `memo`, `useMemo`, `useCallback`.
-2. **Bundle size hợp lý**  
-   - *Vấn đề*: Bundle lớn → TTFB, TTI cao.  
-   - *Check*: Webpack Bundle Analyzer/Vite Visualizer, import tối ưu.
+1. **No unnecessary re-renders**  
+   - *Problem*: Frequent React re-renders waste CPU.  
+   - *Check*: Use React DevTools Profiler, optimize with `memo`, `useMemo`, `useCallback`.
+2. **Reasonable bundle size**  
+   - *Problem*: Large bundle → higher TTFB, TTI.  
+   - *Check*: Webpack Bundle Analyzer/Vite Visualizer, optimize imports.
 3. **Code splitting / lazy loading**  
-   - *Vấn đề*: Tải toàn bộ JS dù chưa dùng.  
-   - *Check*: Dynamic import, React.lazy.
-4. **Prefetch / cache dữ liệu quan trọng**  
-   - *Vấn đề*: Load dữ liệu quan trọng chậm → UX tệ.  
-   - *Check*: Prefetch API, cache bằng localStorage/IndexedDB/SWR.
+   - *Problem*: Loading all JS upfront even if unused.  
+   - *Check*: Use dynamic imports, `React.lazy`.
+4. **Prefetch / cache important data**  
+   - *Problem*: Slow loading of critical data → poor UX.  
+   - *Check*: Prefetch APIs, cache with localStorage/IndexedDB/SWR.
 
 </details>
 
 ### Backend
-- [ ] Không có query N+1  
-- [ ] Query đã index  
-- [ ] Không load toàn bộ data lớn vào memory  
-- [ ] API response không dư data  
-- [ ] Có cache hợp lý  
-- [ ] Không block event loop  
+- [ ] No N+1 queries  
+- [ ] Queries are indexed  
+- [ ] No large dataset loaded fully into memory  
+- [ ] API responses contain only necessary data  
+- [ ] Proper caching applied  
+- [ ] No event loop blocking  
 
 ### Frontend
-- [ ] Không re-render không cần thiết  
-- [ ] Bundle size hợp lý  
-- [ ] Code splitting / lazy loading  
-- [ ] Prefetch / cache dữ liệu quan trọng  
+- [ ] No unnecessary re-renders  
+- [ ] Reasonable bundle size  
+- [ ] Code splitting / lazy loading applied  
+- [ ] Prefetch / cache important data  
 
 ---
 
 ## 🔒 Quality Checklist
-- [ ] Tuân thủ ESLint + Prettier  
-- [ ] Có unit/integration test cho logic mới  
-- [ ] Dùng TypeScript  
-- [ ] Tên biến/hàm/class rõ ràng  
-- [ ] Không lặp lại code  
-- [ ] Không hardcode config/secret  
+- [ ] ESLint + Prettier compliance  
+- [ ] Unit/integration tests for new logic  
+- [ ] TypeScript used  
+- [ ] Clear variable/function/class names  
+- [ ] No duplicated code  
+- [ ] No hardcoded config/secret  
 
 ---
 
 ## 📐 SOLID Checklist
-- [ ] **S**: Module/class chỉ có 1 lý do thay đổi  
-- [ ] **O**: Có thể mở rộng mà không sửa core logic  
-- [ ] **L**: Subclass thay thế superclass an toàn  
-- [ ] **I**: Interface nhỏ gọn  
-- [ ] **D**: Phụ thuộc abstraction, không phụ thuộc implementation  
+- [ ] **S**: A module/class has only one reason to change  
+- [ ] **O**: Open for extension, closed for modification of core logic  
+- [ ] **L**: Subclasses can replace superclass without issues  
+- [ ] **I**: Small and specific interfaces  
+- [ ] **D**: Depend on abstractions, not on concrete implementations  
