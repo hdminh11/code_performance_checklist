@@ -1,1 +1,5 @@
+echo "🔍 ESLint checking..."
 npx lint-staged
+
+echo "🧹 Checking unused packages..."
+npm run check-deps
